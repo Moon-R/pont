@@ -199,14 +199,12 @@ export class MocksServer {
     const mockPath = path.join(rootPath, '.mocks/mocks.ts');
 
     const code = this.getMocksCode();
-    if (!fs.existsSync(path.join(rootPath, '.mocks'))) {
-      fs.mkdirSync(path.join(rootPath, '.mocks'));
-    } else {
-      fs.unlinkSync(path.join(rootPath, '.mocks'));
-      fs.mkdirSync(path.join(rootPath, '.mocks'));
+    if (fs.existsSync(path.join(rootPath, '.mocks'))) {
+      fs.rmdirSync(path.join(rootPath, ".mocks"),{ recursive: true });
     }
+    fs.mkdirSync(path.join(rootPath, '.mocks'));
 
-    await fs.writeFile(mockPath, code);
+    fs.writeFileSync(mockPath, code);
   }
 
   async checkMocksPath() {
